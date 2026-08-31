@@ -18,6 +18,7 @@
 - **数据本地存储**：
   - 网页版：浏览器 OPFS 私有文件系统 + 外部 JSON 文件双备份
   - uTools 插件版：uTools 本地数据库（支持云同步）+ 外部 JSON 文件双备份
+  - 油猴脚本版：油猴 GM 存储（跨网站通用，刷新不丢）+ JSON 导出备份
 - **隐私安全**：数据永远只在你的设备上，代码开源可审计
 - **跨平台**：网页版支持所有现代浏览器，插件版支持 uTools（Windows / macOS / Linux）
 
@@ -25,28 +26,32 @@
 
 ## 📁 仓库结构
 
-本仓库包含**两个独立版本**，可以根据需求选择使用：
+本仓库包含**三个独立版本**，可以根据需求选择使用：
 
 ```
 subscription-book/
-├── index.html                  # 【版本1】纯网页版（双击即可用）
-├── README.md                   # 本说明文件
+├── README.md                          # 本说明文件
 ├── .gitignore
-└── subscription-tracker-utools/   # 【版本2】uTools 插件版
-    ├── plugin.json             # 插件配置
-    ├── preload.js              # 预加载脚本（Node.js 文件读写）
-    ├── index.html              # 插件主页面
-    ├── logo.png                # 插件图标
-    ├── lib/
-    │   └── echarts.min.js     # 图表库（本地）
-    ├── demo-data.json          # 示例数据（发布用）
-    └── screenshots/            # 使用截图（介绍图）
+├── subscription-tracker-web/          # 【版本1】纯网页版
+│   └── index.html                     # 双击即可用浏览器打开
+├── subscription-tracker-utools/       # 【版本2】uTools 插件版
+│   ├── plugin.json                    # 插件配置
+│   ├── preload.js                     # 预加载脚本（Node.js 文件读写）
+│   ├── index.html                     # 插件主页面
+│   ├── logo.png                       # 插件图标
+│   ├── lib/
+│   │   └── echarts.min.js            # 图表库（本地）
+│   ├── demo-data.json                 # 示例数据
+│   └── screenshots/                   # 使用截图
+└── subscription-tracker-userscript/   # 【版本3】油猴脚本版
+    └── subscription-book.user.js      # 单文件脚本，Tampermonkey/Violentmonkey 安装
 ```
 
-| 版本 | 位置 | 适用场景 | 启动方式 |
-|---|---|---|---|
-| **纯网页版** | 根目录 `index.html` | 不想装 uTools，直接用浏览器 | 双击 `index.html` |
-| **uTools 插件版** | `subscription-tracker-utools/` | uTools 用户，一键唤起 | uTools 搜索「订阅账本」 |
+| 版本 | 位置 | 适用场景 | 启动方式 | 数据存储 |
+|---|---|---|---|---|
+| **纯网页版** | `subscription-tracker-web/` | 不想装任何插件，直接用浏览器 | 双击 `index.html` | 浏览器 OPFS + JSON 备份 |
+| **uTools 插件版** | `subscription-tracker-utools/` | uTools 用户，一键唤起 | uTools 搜索「订阅账本」 | uTools 数据库（支持云同步）+ JSON 备份 |
+| **油猴脚本版** | `subscription-tracker-userscript/` | 已装油猴，任何网页随时打开 | 右下角悬浮按钮 / `Ctrl+Shift+B` | 油猴 GM 存储（跨网站通用） |
 
 ---
 
@@ -89,7 +94,7 @@ subscription-book/
 
 ### 版本 1：纯网页版
 
-1. 下载本仓库根目录的 `index.html`
+1. 下载本仓库 `subscription-tracker-web/` 目录下的 `index.html`
 2. 双击用浏览器打开（推荐 Chrome / Edge / Safari）
 3. 开始添加订阅和充值记录
 4. 数据自动保存在浏览器中，可连接外部 JSON 文件做可见备份
@@ -107,6 +112,25 @@ subscription-book/
 5. 安装完成后，在 uTools 搜索框输入「订阅账本」即可打开
 
 > 📌 本项目源码开放仅供学习交流。请勿未经授权将本项目（含修改版本）二次上传至任何插件市场进行发布。
+
+### 版本 3：油猴脚本版
+
+适合已安装 Tampermonkey / Violentmonkey 等油猴扩展的用户，在任何网页上随时打开账本。
+
+**安装方式：**
+
+1. 确保浏览器已安装 Tampermonkey 或 Violentmonkey 扩展
+2. 下载本仓库 `subscription-tracker-userscript/` 目录下的 `subscription-book.user.js`
+3. 打开油猴扩展管理面板，选择「添加新脚本」或直接将 `.user.js` 文件拖入扩展
+4. 安装完成后，任意网页右下角会出现 📒 悬浮按钮
+5. 点击悬浮按钮，或按快捷键 `Ctrl+Shift+B`，即可打开订阅账本
+6. 按 `Esc` 或点击遮罩层关闭面板
+
+**特点：**
+- 任意网页随时打开，无需切换标签页
+- 数据存储在油猴 GM 存储空间，跨网站通用，刷新不丢
+- iframe 完全隔离，不影响原网页样式和脚本
+- 毛玻璃遮罩 + 缩放动画，体验流畅
 
 ---
 
