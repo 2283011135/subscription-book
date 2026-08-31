@@ -1,0 +1,11 @@
+# macOS 系统文件
+.DS_Store
+
+# 真实数据文件（包含个人订阅信息，不提交到公开仓库）
+subscription-data.json
+subscription-tracker-utools/subscription-data.json
+
+# 临时文件
+*.tmp
+*.log
+*.swp
