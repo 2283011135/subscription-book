@@ -2,7 +2,7 @@
   "main": "index.html",
   "logo": "logo.png",
   "preload": "preload.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "本地订阅支出管理工具，支持官方供应商和中转站订阅的充值记录与统计分析",
   "pluginSetting": {
     "single": true,

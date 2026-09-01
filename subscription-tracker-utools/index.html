@@ -1514,28 +1514,12 @@ function disconnectFile() {
   showToast('已断开数据文件，数据仍由 uTools 本地数据库保存');
 }
 
-// 尝试恢复之前连接的外部文件，并优先读取插件目录下的默认数据文件
+// 尝试恢复用户之前手动连接的外部文件
+// 注意：不会自动加载插件目录下的文件，避免覆盖用户数据
 function tryRestoreExternalFile() {
   if (!HAS_FILE_API) return;
 
-  // 1. 优先读取插件目录下的 subscription-data.json（默认数据文件）
-  const pluginDir = window.subscriptionTrackerAPI.getPluginDir();
-  const defaultPath = window.subscriptionTrackerAPI.joinPath(pluginDir, 'subscription-data.json');
-  if (window.subscriptionTrackerAPI.fileExists(defaultPath)) {
-    const fileData = readFromExternalFile(defaultPath);
-    if (fileData && fileData.subscriptions && fileData.payments) {
-      externalFilePath = defaultPath;
-      storageMode = 'file';
-      state = fileData;
-      dbSet(STORAGE_KEY, fileData);
-      dbSet(EXTERNAL_FILE_KEY, defaultPath);
-      updateDataBar();
-      console.log('已自动加载插件目录数据文件');
-      return;
-    }
-  }
-
-  // 2. 其次尝试恢复用户之前连接的外部文件
+  // 只恢复用户之前明确连接过的外部文件（存在 EXTERNAL_FILE_KEY 里的路径）
   const savedPath = dbGet(EXTERNAL_FILE_KEY);
   if (savedPath && window.subscriptionTrackerAPI.fileExists(savedPath)) {
     externalFilePath = savedPath;
